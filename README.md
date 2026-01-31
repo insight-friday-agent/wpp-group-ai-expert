@@ -5,7 +5,7 @@ Pipeline para ingestão contínua de um grupo WhatsApp privado (via API não ofi
 ## Objetivos imediatos
 1. Capturar mensagens do grupo em tempo real ou via polling com a API não oficial.
 2. Normalizar e armazenar o conteúdo em um vetor store (pgvector) e um banco leve.
-3. Operacionalizar um agente que responde perguntas baseadas nos dados recentes com RAG híbrido (vetorial + simbólico) e reranking.
+3. Operacionalizar um agente que responde perguntas baseadas nos dados recentes com RAG híbrido (vetorial + simbólico) e reranking, e testar o loop com Ollama + Agno.
 
 ## Componentes principais
 | Camada | Descrição |
@@ -14,6 +14,7 @@ Pipeline para ingestão contínua de um grupo WhatsApp privado (via API não ofi
 | `src/pipeline` | Transformações, chunking, embeddings e roteamento híbrido para o vetor store e o agente. |
 | `src/agent` | Artefatos que usam o vetor store (pgvector) com prompts declarativos e reranking pelo Agno framework. |
 | `docs/architecture.md` | Diagrama textual do fluxo e integrações planejadas. |
+| `docs/agno-ollama.md` | Passos para ligar o Agno Agent ao Ollama local. |
 
 ## Dados de exemplo
 - `sample_data/messages_template.json`: mensagens sintéticas curtas para testes rápidos e para cobrir eventos/cultos.
@@ -23,11 +24,12 @@ Pipeline para ingestão contínua de um grupo WhatsApp privado (via API não ofi
 ## Scripts principais
 | Comando | O que faz |
 | --- | --- |
-| `python scripts/fetch_quenotebook.py` | Baixa os principais blocos de texto do site e salva em `sample_data/quenotebook.json` para alimentar a ingestão. |
+| `python scripts/fetch_quenotebook.py` | Baixa blocos de texto do site e salva em `sample_data/quenotebook.json` para alimentar a ingestão. |
 | `python scripts/parse_whatsapp_export.py PATH --output sample_data/whatsapp_export.json` | Converte o export de WhatsApp em JSON estruturado para testes locais. |
 | `python scripts/seed_pgvector.py` | Conecta ao Postgres (`PGHOST`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`), cria as tabelas e indexa todos os samples no pgvector. |
 | `python scripts/judge_agent.py` | Executa queries de validação, roda o agente e julga as respostas com base em palavras-chave essenciais e citações. |
 | `bash scripts/auto_judge.sh` | Loop que roda `judge_agent.py`, grava logs em `logs/judge.log` e repete a cada 2 minutos até passar. |
+| `python scripts/run_agno_agent.py "Pergunta"` | Usa o contexto recuperado + reranking para montar um prompt Agno e chama `ollama run $OLLAMA_MODEL` para gerar a resposta local. |
 
 ## Próximos passos
 - Integrar com a API oficial (ou não oficial) usando o collector que já está em `src/ingestion`.
