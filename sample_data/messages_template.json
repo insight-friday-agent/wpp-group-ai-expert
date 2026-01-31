@@ -1,0 +1,14 @@
+[
+  {
+    "message_id": "msg_0001",
+    "timestamp": "2026-01-31T12:00:00Z",
+    "author": "Mateus",
+    "text": "Pessoal, hoje às 20h tem culto criativo."
+  },
+  {
+    "message_id": "msg_0002",
+    "timestamp": "2026-01-31T12:05:00Z",
+    "author": "Larissa",
+    "text": "Tem vídeo novo da liderança explicando a agenda do mês."
+  }
+]
