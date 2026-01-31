@@ -35,8 +35,14 @@
 
 5. **Observabilidade**
    - Logs estruturados, métricas de ingestão (mensagens/hora), latência de respostas do agente.
+   - Endpoint `/status` (FastAPI) para verificar quantos chunks estão indexados no Postgres + pgvector.
+
+6. **Busca híbrida + reranking**
+   - `HybridRetriever` combina buscas vetoriais (pgvector) com match token/termos para garantir recall simbólico.
+   - `SimpleReranker` aplica heurísticas de recência e similaridade textual antes de montar o prompt para o Agno Agent.
 
 ## Próximas ações técnicas
 - Materializar o client e o scheduler de ingestion no `src/ingestion`.
 - Criar testes unitários (ex: fixtures sample_data) que simulam novas mensagens e confirmam escrita no storage.
 - Montar o prompt template e a interface HTTP para o agente (FastAPI + background task).
+- Padronizar as validações com `scripts/judge_agent.py`, garantindo que cada query experimental seja julgada automaticamente.

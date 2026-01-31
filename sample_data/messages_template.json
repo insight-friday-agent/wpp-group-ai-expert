@@ -3,12 +3,18 @@
     "message_id": "msg_0001",
     "timestamp": "2026-01-31T12:00:00Z",
     "author": "Mateus",
-    "text": "Pessoal, hoje às 20h tem culto criativo."
+    "text": "Pessoal, hoje às 20h tem culto criativo com a nova equipe de louvor. Vamos testar o repertório antes."
   },
   {
     "message_id": "msg_0002",
     "timestamp": "2026-01-31T12:05:00Z",
     "author": "Larissa",
-    "text": "Tem vídeo novo da liderança explicando a agenda do mês."
+    "text": "Tem vídeo novo da liderança explicando a agenda do mês: retiros, encontros e oportunidades de oração."
+  },
+  {
+    "message_id": "msg_0003",
+    "timestamp": "2026-01-31T12:10:00Z",
+    "author": "Carlos",
+    "text": "Preparei um resumo dos eventos: culto, oficina de criação e plantão de oração para sexta e sábado."
   }
 ]

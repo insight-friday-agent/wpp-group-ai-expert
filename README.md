@@ -12,12 +12,22 @@ Pipeline para ingestão contínua de um grupo WhatsApp privado (via API não ofi
 | --- | --- |
 | `src/ingestion` | Cliente e scheduler para ler a fila do WhatsApp, persistir no storage intermediário e gerar ingestão contínua. |
 | `src/pipeline` | Transformações, chunking, embeddings e roteamento híbrido para o vetor store e o agente. |
-| `src/agent` | Artefatos que usam o vetor store (pgvector) com promps declarativos e reranking pelo Agno framework. |
+| `src/agent` | Artefatos que usam o vetor store (pgvector) com prompts declarativos e reranking pelo Agno framework. |
 | `docs/architecture.md` | Diagrama textual do fluxo e integrações planejadas. |
 
 ## Dados de exemplo
-- `sample_data/messages_template.json`: mensagens sintéticas curtas para testes rápidos.
-- Use `scripts/parse_whatsapp_export.py` para converter um export real (como o arquivo que você enviou) em JSON estruturado e alimentar a pipeline local.
+- `sample_data/messages_template.json`: mensagens sintéticas curtas para testes rápidos e para cobrir eventos/cultos.
+- `sample_data/quenotebook.json` (gerado com `scripts/fetch_quenotebook.py`): trechos selecionados do site `quenotebookcomprar.com.br`.
+- `sample_data/whatsapp_export.json`: JSON produzido por `scripts/parse_whatsapp_export.py` a partir do export real que você compartilhou.
+
+## Scripts principais
+| Comando | O que faz |
+| --- | --- |
+| `python scripts/fetch_quenotebook.py` | Baixa os principais blocos de texto do site e salva em `sample_data/quenotebook.json` para alimentar a ingestão. |
+| `python scripts/parse_whatsapp_export.py PATH --output sample_data/whatsapp_export.json` | Converte o export de WhatsApp em JSON estruturado para testes locais. |
+| `python scripts/seed_pgvector.py` | Conecta ao Postgres (`PGHOST`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`), cria as tabelas e indexa todos os samples no pgvector. |
+| `python scripts/judge_agent.py` | Executa queries de validação, roda o agente e julga as respostas com base em palavras-chave essenciais e citações. |
+| `bash scripts/auto_judge.sh` | Loop que roda `judge_agent.py`, grava logs em `logs/judge.log` e repete a cada 2 minutos até passar. |
 
 ## Próximos passos
 - Integrar com a API oficial (ou não oficial) usando o collector que já está em `src/ingestion`.
